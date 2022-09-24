@@ -16,4 +16,20 @@ public class Lesson5 {
         System.out.println("Second message: " + secondMessage);
     }
 
+    @Test
+    public void testExercise6(){
+// Необходимо написать тест, который создает GET-запрос на адрес: https://playground.learnqa.ru/api/long_redirect
+// С этого адреса должен происходит редирект на другой адрес. Наша задача — распечатать адрес, на который редиректит указанные URL.
+// Ответом должна быть ссылка на тест в вашем репозитории.
+
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(false)
+                .get("https://playground.learnqa.ru/api/long_redirect")
+                .andReturn();
+
+        String redirectUrl = response.getHeader("Location");
+        System.out.println(redirectUrl);
+    }
 }
