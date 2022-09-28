@@ -1,12 +1,16 @@
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class Lesson5 {
+public class Lesson2 {
 
     @Test
     public void testExercise5() {
@@ -93,6 +97,27 @@ public class Lesson5 {
         }
     }
 
+    @Test
+    public void testExercise9() {
+        String authCookie;
+        List<String> passwordsList;
+
+        try {
+            passwordsList = Files.readAllLines(new File("src/test/resources/passwordsList.txt").toPath(), Charset.defaultCharset());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (String password : passwordsList) {
+            authCookie = GetCookie(password);
+
+            if (isCookieValid(authCookie)) {
+                System.out.println("Admin password: " + password);
+                break;
+            }
+        }
+    }
+
     private LongTimeJobApiResponse getJobRequest(Map<String, String> params, boolean jobCreateRequest) {
         Response r = RestAssured
                 .given()
@@ -113,6 +138,37 @@ public class Lesson5 {
         return obj;
     }
 
+    private String GetCookie(String password) {
+        Map<String, String> params = new HashMap<>();
+        params.put("login", "super_admin");
+        params.put("password", password);
+
+        return RestAssured
+                .given()
+                .contentType(ContentType.TEXT)
+                .formParams(params)
+                .when()
+                .post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
+                .getCookie("auth_cookie");
+    }
+
+    private boolean isCookieValid(String value) {
+        String response = RestAssured
+                .given()
+                .with()
+                .cookie("auth_cookie", value)
+                .get("https://playground.learnqa.ru/ajax/api/check_auth_cookie")
+                .andReturn()
+                .asString();
+
+        switch (response) {
+            case "You are authorized":
+                return true;
+            case "You are NOT authorized":
+            default:
+                return false;
+        }
+    }
 }
 
 class LongTimeJobApiResponse {
