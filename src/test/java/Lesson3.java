@@ -17,7 +17,7 @@ public class Lesson3 {
     }
 
     @Test
-    public void testEx11(){
+    public void testEx11() {
 // Необходимо написать тест, который делает запрос на метод: https://playground.learnqa.ru/api/homework_cookie
 // Этот метод возвращает какую-то cookie с каким-то значением. Необходимо понять что за cookie и с каким значением, и зафиксировать это поведение с помощью assert.
 
@@ -27,6 +27,19 @@ public class Lesson3 {
                 .getCookie("HomeWork");
 
         Assertions.assertEquals("hw_value", actualCookieValue, "HomeWork cookie value is not equal 'hw_value'");
+    }
+
+    @Test
+    public void testEx12() {
+// Необходимо написать тест, который делает запрос на метод: https://playground.learnqa.ru/api/homework_header
+// Этот метод возвращает headers с каким-то значением. Необходимо понять что за headers и с каким значением, и зафиксировать это поведение с помощью assert
+
+        String actualHeaderValue = RestAssured
+                .get("https://playground.learnqa.ru/api/homework_header")
+                .andReturn()
+                .getHeader("x-secret-homework-header");
+
+        Assertions.assertEquals("Some secret value", actualHeaderValue, "Response header value does not equal 'Some secret value'");
     }
 
     private static String[] InputStringsForEx10() {
