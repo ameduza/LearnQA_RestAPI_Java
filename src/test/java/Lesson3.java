@@ -1,7 +1,8 @@
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 
 public class Lesson3 {
 
@@ -13,6 +14,19 @@ public class Lesson3 {
 // Если текст длиннее 15 символов, то тест должен проходить успешно. Иначе падать с ошибкой.
         int inputLength = input.length();
         Assertions.assertTrue(inputLength > 15, "Input string length is less than 15");
+    }
+
+    @Test
+    public void testEx11(){
+// Необходимо написать тест, который делает запрос на метод: https://playground.learnqa.ru/api/homework_cookie
+// Этот метод возвращает какую-то cookie с каким-то значением. Необходимо понять что за cookie и с каким значением, и зафиксировать это поведение с помощью assert.
+
+        String actualCookieValue = RestAssured
+                .get("https://playground.learnqa.ru/api/homework_cookie")
+                .andReturn()
+                .getCookie("HomeWork");
+
+        Assertions.assertEquals("hw_value", actualCookieValue, "HomeWork cookie value is not equal 'hw_value'");
     }
 
     private static String[] InputStringsForEx10() {
