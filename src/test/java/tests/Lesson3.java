@@ -1,3 +1,5 @@
+package tests;
+
 import Models.UserAgentApiResponseModel;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
