@@ -58,4 +58,14 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
+    public static Response UpdateUserDetails(String authHeader, String authCookie, int userId, Map<String, String> userUpdatedData){
+        return RestAssured
+                .given()
+                .header("x-csrf-token", authHeader)
+                .cookie("auth_sid", authCookie)
+                .body(userUpdatedData)
+                .put(userUrl + userId)
+                .andReturn();
+    }
+
 }
