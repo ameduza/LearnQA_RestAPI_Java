@@ -68,4 +68,12 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
+    public static Response DeleteUser(String authHeader, String authCookie, int userId) {
+        return RestAssured
+                .given()
+                .header("x-csrf-token", authHeader)
+                .cookie("auth_sid", authCookie)
+                .delete(userUrl + userId)
+                .andReturn();
+    }
 }
