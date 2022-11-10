@@ -2,6 +2,8 @@ package lib;
 
 import io.restassured.response.Response;
 
+import java.util.Objects;
+
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,12 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Assertions {
     public static void AssertJsonByName(Response response, String keyName, int expectedValue) {
-        response.then().body("$", hasKey(keyName));
+        Assertions.AssertResponseHasField(response, keyName);
 
         int actualValue = response.jsonPath().getInt(keyName);
         assertTrue(expectedValue == actualValue, "Actual JSON value is not equal to expected one");
     }
 
+    public static void AssertJsonByName(Response response, String keyName, String expectedValue) {
+        Assertions.AssertResponseHasField(response, keyName);
+
+        String actualValue = response.jsonPath().getString(keyName);
+        assertTrue(Objects.equals(expectedValue, actualValue), "Actual JSON value is not equal to expected one");
+    }
     public static void AssertStatusCode(Response response, int expectedCode) {
         int actualCode = response.getStatusCode();
 
