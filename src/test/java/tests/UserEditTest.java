@@ -47,5 +47,35 @@ public class UserEditTest extends BaseTestCase {
         Assertions.AssertJsonByName(updatedUserResponse, "lastName", lastNameNewValue);
     }
 
+    @Test
+    public void editUserAsUnauthorisedTest(){
+        // ARRANGE: create user
+        Map<String, String> initialUserData = DataGenerator.GetUserData();
+
+        Response initialUserResponse = ApiCoreRequests.CreateUser(initialUserData);
+        String email = initialUserData.get("email");
+        String initialPassword = initialUserData.get("password");
+        int userId = getUserId(initialUserResponse, "id");
+
+        // ACT: update user data under not authorized user
+        Map<String, String> updatedUserData = new HashMap<>();
+        String firstNameNewValue = "updatedFirstName";
+        String lastNameNewValue = "updatedLastName";
+        updatedUserData.put("firstName", firstNameNewValue);
+        updatedUserData.put("lastName", lastNameNewValue);
+
+        Response updateResponse = ApiCoreRequests.UpdateUserDetails(
+                "",
+                "",
+                userId,
+                updatedUserData);
+
+        // ASSERT: update failed
+        Assertions.AssertStatusCode(updateResponse, 400);
+        Assertions.AssertResponseBody(updateResponse, "Auth token not supplied");
+    }
+
+
+
 
 }
