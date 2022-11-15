@@ -33,7 +33,7 @@ public class UserAuthTest extends BaseTestCase {
 
         this.authCookie = getCookie(loginResponse, "auth_sid");
         this.authHeader = getHeader(loginResponse, "x-csrf-token");
-        this.userId = getUserId(loginResponse, "user_id");
+        this.userId = getResponseJsonIntValue(loginResponse, "user_id");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class UserAuthTest extends BaseTestCase {
                 .get("https://playground.learnqa.ru/api/user/auth")
                 .andReturn();
 
-        int authUserId = getUserId(authResponse, "user_id");
+        int authUserId = getResponseJsonIntValue(authResponse, "user_id");
 
         Assertions.AssertJsonByName(authResponse, "user_id", authUserId);
     }

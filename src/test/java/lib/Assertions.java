@@ -1,5 +1,6 @@
 package lib;
 
+import Models.UserResponseModel;
 import io.restassured.response.Response;
 
 import java.util.Objects;
@@ -53,5 +54,9 @@ public class Assertions {
         for (String unexpectedFieldName : unexpectedFieldNames) {
             Assertions.AssertResponseHasNoField(response, unexpectedFieldName);
         }
+    }
+
+    public static void AssertUserEquals(UserResponseModel expectedUser, UserResponseModel actualUser){
+        assertEquals(expectedUser, actualUser, "User is not equal");
     }
 }

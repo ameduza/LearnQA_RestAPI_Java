@@ -26,6 +26,8 @@ public class UserDeleteTest extends BaseTestCase {
 
         // ASSERT: assert delete failed
         Assertions.AssertStatusCode(deleteUserResponse, 400);
+        // User still exist
+        Assertions.AssertStatusCode(ApiCoreRequests.GetUserDetails(2), 200);
     }
 
     @Test
@@ -36,7 +38,7 @@ public class UserDeleteTest extends BaseTestCase {
         Response initialUserResponse = ApiCoreRequests.CreateUser(initialUserData);
         userEmail = initialUserData.get("email");
         userPassword = initialUserData.get("password");
-        userId = getUserId(initialUserResponse, "id");
+        userId = getResponseJsonIntValue(initialUserResponse, "id");
 
         // ACT: login under createdUser and delete it
         Map<String, String> authData = ApiCoreRequests.UserLogin(userEmail, userPassword);
@@ -45,11 +47,10 @@ public class UserDeleteTest extends BaseTestCase {
                 authData.get("cookie"),
                 userId);
 
-        Response getUserResponse = ApiCoreRequests.GetUserDetails(userId);
-
-        // ASSERT: assert delete succeed, user not found
+        // ASSERT: assert delete succeed
         Assertions.AssertStatusCode(deleteUserResponse, 200);
-        Assertions.AssertResponseBody(getUserResponse, "User not found");
+        // User not found
+        Assertions.AssertResponseBody(ApiCoreRequests.GetUserDetails(userId), "User not found");
     }
 
     @Test
@@ -60,7 +61,7 @@ public class UserDeleteTest extends BaseTestCase {
         Response initialUserResponse = ApiCoreRequests.CreateUser(initialUserData);
         userEmail = initialUserData.get("email");
         userPassword = initialUserData.get("password");
-        userId = getUserId(initialUserResponse, "id");
+        userId = getResponseJsonIntValue(initialUserResponse, "id");
 
         // ACT: login under one user, but delete created user
         Map<String, String> authData = ApiCoreRequests.UserLogin("vinkotov@example.com", "1234");
@@ -69,7 +70,9 @@ public class UserDeleteTest extends BaseTestCase {
                 authData.get("cookie"),
                 userId);
 
-        // ASSERT: update failed
+        // ASSERT: delete failed
         Assertions.AssertStatusCode(deleteUserResponse, 400);
+        // User still exist
+        Assertions.AssertStatusCode(ApiCoreRequests.GetUserDetails(userId), 200);
     }
 }

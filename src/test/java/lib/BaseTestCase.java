@@ -23,7 +23,7 @@ public class BaseTestCase {
         return headers.getValue(name);
     }
 
-    protected int getUserId(Response response, String key){
+    protected int getResponseJsonIntValue(Response response, String key){
         response.then().assertThat().body("$", hasKey(key));
 
         return response.jsonPath().getInt(key);
