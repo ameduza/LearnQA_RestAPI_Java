@@ -1,5 +1,8 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.DataGenerator;
@@ -11,8 +14,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.*;
 
+@Epic("User tests")
+@Feature("Register user")
 public class UserRegisterTest {
     @Test
+    @Description("Should not register user without @ sign")
     public void testCreateUserWithInvalidEmail() {
         // create user with invalid email - without @
         Map<String, String> userData = new HashMap<>();

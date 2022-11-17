@@ -1,5 +1,6 @@
 package lib;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -10,6 +11,7 @@ public class ApiCoreRequests {
     static String userUrl = "https://playground.learnqa.ru/api/user/";
     static String loginUrl = "https://playground.learnqa.ru/api/user/login";
 
+    @Step("Login with {email}")
     public static Map<String, String> UserLogin(String email, String password) {
         Map<String, String> userData = new HashMap<>();
         userData.put("email", email);
@@ -24,9 +26,10 @@ public class ApiCoreRequests {
         authData.put("header", header);
         authData.put("cookie", cookie);
 
-        return  authData;
+        return authData;
     }
 
+    @Step("Create user")
     public static Response CreateUser(Map<String, String> userData) {
         return RestAssured
                 .given()
@@ -45,10 +48,12 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
+    @Step("GET user data as NON authenticated user")
     public static Response GetUserDetails(int userId) {
         return RestAssured.given().get(userUrl + userId).andReturn();
     }
 
+    @Step("GET user data as authenticated user")
     public static Response GetUserDetails(String authHeader, String authCookie, int userId) {
         return RestAssured
                 .given()
@@ -58,7 +63,8 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
-    public static Response UpdateUserDetails(String authHeader, String authCookie, int userId, Map<String, String> userUpdatedData){
+    @Step("Update user data")
+    public static Response UpdateUserDetails(String authHeader, String authCookie, int userId, Map<String, String> userUpdatedData) {
         return RestAssured
                 .given()
                 .header("x-csrf-token", authHeader)
@@ -68,6 +74,7 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
+    @Step("Delete user")
     public static Response DeleteUser(String authHeader, String authCookie, int userId) {
         return RestAssured
                 .given()
