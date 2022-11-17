@@ -52,7 +52,7 @@ public class UserEditTest extends BaseTestCase {
 
     @Test
     @Description("Should be able to update existing user")
-    @DisplayName("Edit just created test")
+    @DisplayName("Edit just created user")
     public void editJustCreatedUserTest() {
         // ACT: login under createdUser and update its data
         Map<String, String> updatedUserData = new HashMap<>();
@@ -80,6 +80,7 @@ public class UserEditTest extends BaseTestCase {
 
     @Test
     @Description("Should not be able to update user if not authorised")
+    @DisplayName("Update user data under not authorized user")
     public void editUserAsUnauthorisedTest() {
         // ACT: update user data under not authorized user
         Map<String, String> updatedUserData = new HashMap<>();
@@ -111,8 +112,8 @@ public class UserEditTest extends BaseTestCase {
 
     @Test
     @Description("Should not be able to update user if authorised as another one")
+    @DisplayName("Update user as authenticated as another one")
     public void editUserAsAnotherAuthorisedTest() {
-
         // ACT: login under one user, but edit created user data
         Map<String, String> updatedUserData = new HashMap<>();
         updatedUserData.put("firstName", "updatedFirstName");
@@ -142,6 +143,7 @@ public class UserEditTest extends BaseTestCase {
 
     @ParameterizedTest
     @Description("Should not be able to update user with invalid data")
+    @DisplayName("Update user data with invalid data")
     @CsvSource({
             "email,user-emailexample.com", // email with no @ sign
             "firstName,1" // firstName very short
