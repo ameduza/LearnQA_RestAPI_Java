@@ -1,5 +1,8 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.Assertions;
@@ -9,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+@Epic("User tests")
+@Feature("Delete user")
 public class UserDeleteTest extends BaseTestCase {
 
     int userId;
@@ -16,6 +21,7 @@ public class UserDeleteTest extends BaseTestCase {
     String userPassword;
 
     @Test
+    @Description("Should not be able to delete locked user")
     public void deleteLockedUserTest() {
         // ACT: login as userId=2 and try to delete it
         Map<String, String> authData = ApiCoreRequests.UserLogin("vinkotov@example.com", "1234");
@@ -31,6 +37,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Should delete just created user")
     public void deleteJustCreatedUserTest() {
         // ARRANGE: create user
         Map<String, String> initialUserData = DataGenerator.GetUserData();
@@ -54,6 +61,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Should not be able to delete user if authorised as another one")
     public void deleteUserUnderOtherUserTest() {
         // ARRANGE: create user
         Map<String, String> initialUserData = DataGenerator.GetUserData();

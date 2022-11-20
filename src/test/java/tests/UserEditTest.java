@@ -1,12 +1,16 @@
 package tests;
 
 import Models.UserResponseModel;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,6 +19,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("User tests")
+@Feature("Update user")
 public class UserEditTest extends BaseTestCase {
 
     int userId;
@@ -41,9 +47,12 @@ public class UserEditTest extends BaseTestCase {
 
         userEmail = initialUserData.get("email");
         userPassword = initialUserData.get("password");
+
     }
 
     @Test
+    @Description("Should be able to update existing user")
+    @DisplayName("Edit just created user")
     public void editJustCreatedUserTest() {
         // ACT: login under createdUser and update its data
         Map<String, String> updatedUserData = new HashMap<>();
@@ -70,6 +79,8 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Should not be able to update user if not authorised")
+    @DisplayName("Update user data under not authorized user")
     public void editUserAsUnauthorisedTest() {
         // ACT: update user data under not authorized user
         Map<String, String> updatedUserData = new HashMap<>();
@@ -100,11 +111,14 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Description("Should not be able to update user if authorised as another one")
+    @DisplayName("Update user as authenticated as another one")
     public void editUserAsAnotherAuthorisedTest() {
         // ACT: login under one user, but edit created user data
         Map<String, String> updatedUserData = new HashMap<>();
         updatedUserData.put("firstName", "updatedFirstName");
         updatedUserData.put("lastName", "updatedLastName");
+
 
         Map<String, String> user2AuthData = ApiCoreRequests.UserLogin("vinkotov@example.com", "1234");
         Response updateResponse = ApiCoreRequests.UpdateUserDetails(
@@ -128,6 +142,8 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @ParameterizedTest
+    @Description("Should not be able to update user with invalid data")
+    @DisplayName("Update user data with invalid data")
     @CsvSource({
             "email,user-emailexample.com", // email with no @ sign
             "firstName,1" // firstName very short

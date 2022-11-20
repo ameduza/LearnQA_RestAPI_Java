@@ -1,5 +1,8 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.DataGenerator;
@@ -8,11 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.platform.commons.util.StringUtils;
 
 import java.util.*;
 
+@Epic("User tests")
+@Feature("Register user")
 public class UserRegisterTest {
     @Test
+    @Description("Should not register user without @ sign")
     public void testCreateUserWithInvalidEmail() {
         // create user with invalid email - without @
         Map<String, String> userData = new HashMap<>();
@@ -65,7 +72,7 @@ public class UserRegisterTest {
     public void testCreateUserWithLongName() {
         // 1 user with name longer than 250 characters
         Map<String, String> userWithLongName = new HashMap<>();
-        String longName = "A".repeat(256);
+        String longName = "nhmIcL06KDH1yyD70a6XI76JVFVwLPAsRVVhAKNpMcfjKRcSra1xjAlNCoJNldIKNRXkuj53alwrjfIj50sCHp4pneoXhXHzzHd22y6ZrL8NcVyFjoJpLwhihz2Ura77SANAjTOquTv3y4bGsvv60TkLWp8HaIEolLWYiXvkS0IYhGxJSllCfjGljB2JmzK0bNtQpXQ6SuUb3KhAsSWuRrsNmZ4gNvv95Meu4yRHeqgpiGjfgIaQxG5EUvs0JuJs";
         userWithLongName = DataGenerator.GetUserData();
         userWithLongName.replace("username", longName);
 
