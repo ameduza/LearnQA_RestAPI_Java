@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.platform.commons.util.StringUtils;
 
 import java.util.*;
 
@@ -71,7 +72,7 @@ public class UserRegisterTest {
     public void testCreateUserWithLongName() {
         // 1 user with name longer than 250 characters
         Map<String, String> userWithLongName = new HashMap<>();
-        String longName = "A".repeat(256);
+        String longName = "nhmIcL06KDH1yyD70a6XI76JVFVwLPAsRVVhAKNpMcfjKRcSra1xjAlNCoJNldIKNRXkuj53alwrjfIj50sCHp4pneoXhXHzzHd22y6ZrL8NcVyFjoJpLwhihz2Ura77SANAjTOquTv3y4bGsvv60TkLWp8HaIEolLWYiXvkS0IYhGxJSllCfjGljB2JmzK0bNtQpXQ6SuUb3KhAsSWuRrsNmZ4gNvv95Meu4yRHeqgpiGjfgIaQxG5EUvs0JuJs";
         userWithLongName = DataGenerator.GetUserData();
         userWithLongName.replace("username", longName);
 
